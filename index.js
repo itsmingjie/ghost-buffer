@@ -19,32 +19,32 @@ var charges = 0;
 
 require("dotenv").config();
 
-app.get("/charge/:key", (req, res) => {
+app.post("/charge/:key", (req, res) => {
   console.log("Launch request received.");
 
   console.log("Key: " + req.params.key);
   console.log("API Key: " + process.env.API_KEY);
 
-  if (req.params.key == process.env.API_KEY) {
+  if (req.params.key.trim() == process.env.API_KEY) {
     charge();
     console.log("Charge successful. Current charge: " + charges);
-    res.send(200);
+    res.sendStatus(200);
   } else {
-    res.send(403);
+    res.sendStatus(403);
   }
 });
 
-app.get("/launch/:key", (req, res) => {
+app.post("/launch/:key", (req, res) => {
   console.log("Launch request received.");
 
   console.log("Key: " + req.params.key);
   console.log("API Key: " + process.env.API_KEY);
 
-  if (req.params.key == process.env.API_KEY) {
+  if (req.params.key.trim() == process.env.API_KEY) {
     charge();
-    res.send(200);
+    res.sendStatus(200);
   } else {
-    res.send(403);
+    res.sendStatus(403);
   }
 });
 
