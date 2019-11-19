@@ -38,7 +38,7 @@ app.post("/launch/:key", (req, res) => {
   console.log("API Key: " + process.env.API_KEY);
 
   if (req.params.key.trim() == process.env.API_KEY) {
-    charge();
+    launch();
     res.sendStatus(200);
   } else {
     res.sendStatus(403);
