@@ -12,18 +12,15 @@ app.use(
 );
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log("Ghost buffer is running.")
-})
+  console.log("Ghost buffer is running.");
+});
 
 var charges = 0;
 
 require("dotenv").config();
 
 app.post("/charge/:key", (req, res) => {
-  console.log("Launch request received.");
-
-  console.log("Key: " + req.params.key);
-  console.log("API Key: " + process.env.API_KEY);
+  console.log("Charge request received at " + new Date().toUTCString());
 
   if (req.params.key.trim() == process.env.API_KEY) {
     charge();
@@ -52,7 +49,10 @@ app.post("/launch/:key", (req, res) => {
 function charge() {
   charges++;
 
-  if (charges >= parseInt(process.env.CAPACITANCE)) launch();
+  if (charges >= parseInt(process.env.CAPACITANCE)) {
+      console.log("Capacity reached. Launching...")
+      launch();
+  }
 }
 
 // launch build hook
@@ -79,7 +79,10 @@ process
   .on("SIGINT", shutdown("SIGINT"))
   .on("uncaughtException", shutdown("uncaughtException"));
 
-setInterval(console.log.bind(console, "tick-tock"), 1000);
+setInterval(
+  console.log.bind(console, "tick-tock... charges: " + charges),
+  1000
+);
 http
   .createServer((req, res) => res.end("hi"))
   .listen(process.env.PORT || 3000, () => console.log("Listening"));
