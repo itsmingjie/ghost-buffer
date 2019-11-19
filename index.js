@@ -79,10 +79,6 @@ process
   .on("SIGINT", shutdown("SIGINT"))
   .on("uncaughtException", shutdown("uncaughtException"));
 
-setInterval(
-  console.log.bind(console, "tick-tock... charges: " + charges),
-  1000
-);
 http
   .createServer((req, res) => res.end("hi"))
   .listen(process.env.PORT || 3000, () => console.log("Listening"));
