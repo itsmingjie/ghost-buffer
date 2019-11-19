@@ -19,11 +19,11 @@ var charges = 0;
 
 require("dotenv").config();
 
-app.post("/charge/:key", (req, res) => {
+app.get("/charge/:key", (req, res) => {
   console.log("Launch request received.");
 
-  console.log("Key: " + key);
-  console.log("API Key: " + key);
+  console.log("Key: " + req.params.key);
+  console.log("API Key: " + process.env.API_KEY);
 
   if (req.params.key == process.env.API_KEY) {
     charge();
@@ -34,11 +34,11 @@ app.post("/charge/:key", (req, res) => {
   }
 });
 
-app.post("/launch/:key", (req, res) => {
+app.get("/launch/:key", (req, res) => {
   console.log("Launch request received.");
 
-  console.log("Key: " + key);
-  console.log("API Key: " + key);
+  console.log("Key: " + req.params.key);
+  console.log("API Key: " + process.env.API_KEY);
 
   if (req.params.key == process.env.API_KEY) {
     charge();
