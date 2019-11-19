@@ -1,0 +1,17 @@
+{
+  "name": "ghost-buffer",
+  "version": "1.0.0",
+  "description": "Node app to buffer build hooks from headless Ghost instance.",
+  "main": "index.js",
+  "repository": "https://github.com/itsmingjie/ghost-buffer",
+  "author": "Mingjie Jiang<jiang@mingjie.info>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
