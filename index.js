@@ -1,6 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var axios = require('axios')
+var axios = require("axios");
 
 // initialize Express
 var app = express();
@@ -11,50 +11,64 @@ app.use(
   })
 );
 
-var charges = 0
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Ghost buffer is running.")
+})
 
-require("dotenv").config()
+var charges = 0;
+
+require("dotenv").config();
 
 app.post("/charge/:key", (req, res) => {
+  console.log("Launch request received.");
+
+  console.log("Key: " + key);
+  console.log("API Key: " + key);
+
   if (req.params.key == process.env.API_KEY) {
-    charge()
-    console.log("Charge successful. Current charge: " + charges)
-    res.send(200)
+    charge();
+    console.log("Charge successful. Current charge: " + charges);
+    res.send(200);
   } else {
-    res.send(403)
+    res.send(403);
   }
-})
+});
 
 app.post("/launch/:key", (req, res) => {
+  console.log("Launch request received.");
+
+  console.log("Key: " + key);
+  console.log("API Key: " + key);
+
   if (req.params.key == process.env.API_KEY) {
-    charge()
-    res.send(200)
+    charge();
+    res.send(200);
   } else {
-    res.send(403)
+    res.send(403);
   }
-})
+});
 
 // charge up the capacitor
 function charge() {
-    charges++
-    
-    if (charges >= parseInt(process.env.CAPACITANCE)) 
-        launch()
+  charges++;
+
+  if (charges >= parseInt(process.env.CAPACITANCE)) launch();
 }
 
 // launch build hook
 function launch() {
-    axios.post(process.env.BUILD_HOOK)
-    .then((res) => {
-        console.log("Hook launched successfully to " + process.env.BUILD_HOOK)
-        console.log("Response: " + res)
+  axios
+    .post(process.env.BUILD_HOOK)
+    .then(res => {
+      console.log("Hook launched successfully to " + process.env.BUILD_HOOK);
+      console.log("Response: " + res);
 
-        charges = 0
+      charges = 0;
     })
-    .catch((err) => {
-        console.error("Hook launch failed.")
-        console.error(err)
-    })
+    .catch(err => {
+      console.error("Hook launch failed.");
+      console.error(err);
+    });
 }
 
 const http = require("http");
@@ -73,14 +87,14 @@ http
 function shutdown(signal) {
   return err => {
     if (charges > 0) {
-        console.log(`${signal} received. Flushing all charges.`);
-        launch()
-    
-        if (err) console.error(err.stack || err);
-        setTimeout(() => {
-          console.log("Waited 20s, ghost buffer is exiting.");
-          process.exit(err ? 1 : 0);
-        }, 20000).unref()
+      console.log(`${signal} received. Flushing all charges.`);
+      launch();
+
+      if (err) console.error(err.stack || err);
+      setTimeout(() => {
+        console.log("Waited 20s, ghost buffer is exiting.");
+        process.exit(err ? 1 : 0);
+      }, 20000).unref();
     }
-  }
+  };
 }
