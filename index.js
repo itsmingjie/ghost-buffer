@@ -48,6 +48,8 @@ function launch() {
     .then((res) => {
         console.log("Hook launched successfully to " + process.env.BUILD_HOOK)
         console.log("Response: " + res)
+
+        charges = 0
     })
     .catch((err) => {
         console.error("Hook launch failed.")
@@ -70,13 +72,15 @@ http
 
 function shutdown(signal) {
   return err => {
-    console.log(`${signal} received. Flushing all charges.`);
-    launch()
-
-    if (err) console.error(err.stack || err);
-    setTimeout(() => {
-      console.log("Waited 20s, ghost buffer is exiting.");
-      process.exit(err ? 1 : 0);
-    }, 20000).unref()
+    if (charges > 0) {
+        console.log(`${signal} received. Flushing all charges.`);
+        launch()
+    
+        if (err) console.error(err.stack || err);
+        setTimeout(() => {
+          console.log("Waited 20s, ghost buffer is exiting.");
+          process.exit(err ? 1 : 0);
+        }, 20000).unref()
+    }
   }
 }
